@@ -1,0 +1,398 @@
+
+Best Sorting Algorithm to Use?
+_____________________________________________________________________________________________________________
+| Sorting Algorithm| Time Complexity (Avg) | Space Complexity | Best Use Case                                |
+|------------------|-----------------------|------------------|----------------------------------------------|
+| Quick Sort       | O(n log n)            | O(log n)         | Best for general use, fast on average.       |
+| Merge Sort       | O(n log n)            | O(n)             | Stable sorting, best for linked lists.       |
+| Heap Sort        | O(n log n)            | O(1)             | In-place sorting, used in priority queues.   |
+| Insertion Sort   | O(n²)                 | O(1)             | Small or nearly sorted datasets.             |
+| Bubble Sort      | O(n²)                 | O(1)             | **Avoid for large datasets.**                |
+|__________________|_______________________|__________________|______________________________________________|
+
+    Quick Sort Algorithm - 
+        ✅ Definition:
+        Quick Sort is a divide-and-conquer sorting algorithm that selects a pivot element and partitions
+        the array into two subarrays—one with elements smaller than the pivot and one with elements greater than the pivot.
+        It then recursively sorts the subarrays.
+
+        ✅ Algorithm Steps:
+
+        Select a pivot element (can be last, first, or a random element).
+        Partition the array into:
+        Elements less than the pivot (left subarray).
+        Elements greater than the pivot (right subarray).
+        Recursively apply Quick Sort on both subarrays.
+        Combine the sorted subarrays with the pivot.
+        ✅ Time Complexity:
+
+        Best/Average case (O(n log n)) → Efficient for large datasets.
+        Worst case (O(n²)) → Occurs when the smallest or largest element is always chosen as the pivot (unbalanced partitions).
+        ✅ Space Complexity:
+
+        O(log n) (due to recursive function calls).
+        ✅ Implementation (JavaScript):
+
+        javascript
+        Copy
+        Edit
+        function quickSort(arr) {
+            if (arr.length <= 1) return arr;
+            
+            let pivot = arr[arr.length - 1];  // Choosing last element as pivot
+            let left = arr.filter(el => el < pivot);
+            let right = arr.filter(el => el > pivot);
+            
+            return [...quickSort(left), pivot, ...quickSort(right)];
+        }
+
+        // Example usage:
+        console.log(quickSort([64, 25, 12, 22, 11])); 
+        // Output: [11, 12, 22, 25, 64]
+        ✅ Key Points:
+
+        Fast and widely used sorting algorithm.
+        Unstable sorting algorithm (does not preserve equal elements' order).
+        Best for large datasets but may need optimizations (e.g., random pivot selection) to avoid worst-case performance.
+
+
+    Merge Sort Algorithm - Short Notes
+        ✅ Definition:
+        Merge Sort is a divide-and-conquer sorting algorithm that splits the array into smaller subarrays, sorts them recursively,
+        and then merges them back into a sorted array.
+
+        ✅ Algorithm Steps:
+        Divide the array into two halves.
+        Recursively sort each half.
+        Merge the two sorted halves into a single sorted array.
+
+        ✅ Time Complexity:
+        Best/Average/Worst case (O(n log n)) → Efficient for all cases.
+
+        ✅ Space Complexity:
+        O(n) (extra space needed for merging).
+
+        ✅ Implementation (JavaScript):
+
+        function mergeSort(arr) {
+            if (arr.length < 2) return arr;
+            
+            let mid = Math.floor(arr.length / 2);
+            let left = mergeSort(arr.slice(0, mid));
+            let right = mergeSort(arr.slice(mid));
+            
+            return merge(left, right);
+        }
+
+        function merge(left, right) {
+            let result = [];
+            while (left.length && right.length) {
+                result.push(left[0] < right[0] ? left.shift() : right.shift());
+            }
+            return [...result, ...left, ...right];
+        }
+
+        // Example usage:
+        console.log(mergeSort([64, 25, 12, 22, 11])); 
+        // Output: [11, 12, 22, 25, 64]
+
+        ✅ Key Points:
+        Stable sorting algorithm (preserves equal elements' order).
+        Efficient for large datasets but uses extra memory.
+        Best for linked lists and external sorting (large files).
+
+
+    Heap Sort Algorithm - Short Notes
+        ✅ Definition:
+        Heap Sort is a comparison-based sorting algorithm that uses a binary heap data structure to build a max heap and repeatedly
+        extracts the largest element to sort the array.
+
+        ✅ Algorithm Steps:
+        Build a max heap from the given array.
+        Extract the maximum element (root of the heap) and place it at the end.
+        Reduce the heap size and heapify the root again.
+        Repeat until all elements are sorted.
+       
+        ✅ Time Complexity:
+         Best/Average/Worst case: O(n log n) (efficient for all cases).
+        ✅ Space Complexity:
+        O(1) (in-place sorting, no extra memory required).
+
+        ✅ Implementation (JavaScript):
+
+        function heapSort(arr) {
+            let n = arr.length;
+
+            // Build max heap
+            for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+                heapify(arr, n, i);
+            }
+
+            // Extract elements from heap
+            for (let i = n - 1; i > 0; i--) {
+                [arr[0], arr[i]] = [arr[i], arr[0]];  // Swap max element to end
+                heapify(arr, i, 0);  // Heapify the reduced heap
+            }
+
+            return arr;
+        }
+
+        function heapify(arr, n, i) {
+            let largest = i;
+            let left = 2 * i + 1;
+            let right = 2 * i + 2;
+
+            if (left < n && arr[left] > arr[largest]) largest = left;
+            if (right < n && arr[right] > arr[largest]) largest = right;
+
+            if (largest !== i) {
+                [arr[i], arr[largest]] = [arr[largest], arr[i]];
+                heapify(arr, n, largest);
+            }
+        }
+
+        // Example usage:
+        console.log(heapSort([64, 25, 12, 22, 11])); 
+        // Output: [11, 12, 22, 25, 64]
+        ✅ Key Points:
+
+        Efficient for large datasets, but not stable (doesn't maintain equal elements' order).
+        In-place sorting algorithm (does not require extra memory).
+        Used in priority queues and real-time systems. 🚀
+
+
+    Insertion Sort Algorithm - Short Notes
+        ✅ Definition:
+        Insertion Sort is a simple and stable sorting algorithm that builds the final sorted array one element at a time by 
+        picking elements and inserting them in the correct position.
+
+        ✅ Algorithm Steps:
+
+        Start from the second element (index 1).
+        Compare it with elements before it and shift larger elements to the right.
+        Insert the current element in its correct position.
+        Repeat for all elements in the array.
+
+        ✅ Time Complexity:
+        Best Case: O(n) (when the array is already sorted).
+        Worst/Average Case: O(n²) (when the array is reversed or unsorted).
+
+        ✅ Space Complexity:
+        O(1) (in-place sorting, no extra memory used).
+
+        ✅ Implementation (JavaScript):
+
+        function insertionSort(arr) {
+            for (let i = 1; i < arr.length; i++) {
+                let key = arr[i];
+                let j = i - 1;
+                
+                while (j >= 0 && arr[j] > key) {
+                    arr[j + 1] = arr[j];  // Shift elements
+                    j--;
+                }
+                arr[j + 1] = key;  // Insert key at correct position
+            }
+            return arr;
+        }
+
+        // Example usage:
+        console.log(insertionSort([64, 25, 12, 22, 11])); 
+        // Output: [11, 12, 22, 25, 64]
+        ✅ Key Points:
+
+        Efficient for small or nearly sorted arrays.
+        Stable sorting algorithm (maintains order of equal elements).
+        Not suitable for large datasets due to O(n²) complexity.
+
+1. Sort element in an array (Bubble sort)
+    Bubble Sort Algorithm - 
+        ✅ Definition:
+        Bubble Sort is a simple sorting algorithm that repeatedly swaps adjacent elements if they are in the wrong order.
+        It continues until the array is fully sorted.
+
+        ✅ Algorithm Steps:
+
+        Start from the first element and compare it with the next element.
+        If the current element is greater than the next, swap them.
+        Move to the next element and repeat the process for the entire array.
+        Repeat the process for n-1 passes, where n is the length of the array.
+        If no swaps occur in a pass, the array is already sorted.
+        ✅ Time Complexity:
+
+        Best case (O(n)) → When the array is already sorted.
+        Worst/Average case (O(n²)) → When the array is reversed or unsorted.
+        ✅ Space Complexity:
+
+        O(1) (in-place sorting, no extra memory used).
+        ✅ Implementation (Optimized Bubble Sort in JavaScript):
+
+        function bubbleSort(arr) {
+            let n = arr.length;
+            let swapped;
+            
+            for (let i = 0; i < n - 1; i++) {
+                swapped = false;
+                
+                for (let j = 0; j < n - 1 - i; j++) {
+                    if (arr[j] > arr[j + 1]) {
+                        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]; // Swap
+                        swapped = true;
+                    }
+                }
+                
+                if (!swapped) break; // Stop if already sorted
+            }
+            
+            return arr;
+        }
+
+        // Example usage:
+        console.log(bubbleSort([64, 34, 25, 12, 22, 11, 90])); 
+        // Output: [11, 12, 22, 25, 34, 64, 90]
+        ✅ Key Points:
+
+        Simple but inefficient for large datasets.
+        Works best for small or nearly sorted arrays.
+        Optimized version stops early if the array is already sorted.
+        Not suitable for real-world large sorting tasks (Use Quick Sort or Merge Sort instead). 
+
+          
+2. Search the element in an array (Linear search, Binary search)
+    Linear Search Algorithm - 
+        ✅ Definition:
+        Linear Search is a simple searching algorithm that checks each element of an array one by one until the
+         target element is found.
+
+        ✅ Algorithm Steps:
+
+        Start from the first element of the array.
+        Compare each element with the target value.
+        If a match is found, return the index.
+        If the loop completes without finding the element, return -1.
+        ✅ Time Complexity:
+
+        Best case (O(1)): When the first element is the target.
+        Worst/Average case (O(n)): When the element is at the end or not present.
+        ✅ Space Complexity:
+
+        O(1) (only uses a few extra variables).
+        ✅ Implementation (Iterative):
+
+        javascript
+        Copy
+        Edit
+        function linearSearch(arr, target) {
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] === target) return i; // Element found
+            }
+            return -1; // Element not found
+        }
+        ✅ Key Points:
+
+        Works on both sorted and unsorted arrays.
+        Inefficient for large datasets compared to binary search.
+        Useful when the array is small or unsorted.
+        Simple and easy to implement.
+
+    Binary Search Algorithm - 
+        ✅ Definition:
+        Binary Search is an efficient searching algorithm that finds an element in a sorted array by repeatedly dividing
+         the search space in half.
+
+        ✅ Algorithm Steps:
+
+        Set left = 0 and right = n - 1.
+        Find the middle index: mid = Math.floor((left + right) / 2).
+        Compare arr[mid] with the target:
+        If arr[mid] == target → Return index.
+        If arr[mid] < target → Search right half (left = mid + 1).
+        If arr[mid] > target → Search left half (right = mid - 1).
+        Repeat steps until left > right.
+        If the element is not found, return -1.
+
+        ✅ Time Complexity:
+        Best case (O(1)): When the middle element is the target.
+        Worst/Average case (O(log n)): Search space reduces by half in each step.
+        
+        ✅ Space Complexity:
+        Iterative: O(1) (constant extra space).
+        Recursive: O(log n) (due to recursive calls).
+        
+        ✅ Implementation (Iterative):-javascript
+
+        function binarySearch(arr, target) {
+            let left = 0, right = arr.length - 1;
+            
+            while (left <= right) {
+                let mid = Math.floor((left + right) / 2);
+                
+                if (arr[mid] === target) return mid;
+                else if (arr[mid] < target) left = mid + 1;
+                else right = mid - 1;
+            }
+            
+            return -1;
+        }
+
+        ✅ Key Points:
+        Works only on sorted arrays.
+        Efficient for large datasets compared to linear search.
+        Can be implemented iteratively or recursively.
+        Better than O(n) searches like linear search for sorted data.
+
+3. Find the majority element in an array
+
+4. Merge sorted array
+
+5. Find the smallest number in an array
+
+6. Find the largest number in an array
+
+7. Find the second smallest and second largest element in an array
+
+8. Find the Missing number in an array
+
+9. Reverse a given array
+
+10. Count the frequency of each element in an array
+
+11. Rearrange the array in increasing-decreasing order
+
+12. Calculate the sum of the elements of the array
+
+13. Rotate an array by K elements - Block Swap Algorithm
+
+14. Find the average of all elements in an array
+
+15. Find the median of the given array
+
+16. Remove duplicates from a sorted array
+
+17. Remove duplicates from an unsorted array
+
+18. Add an element in an array
+
+19. Find all repeating elements in an array
+
+20. Find all non-repeating elements in an array
+
+21. Find all symmetric pairs in an array
+
+22. Find the maximum product subarray in an array
+
+23. Replace each element of the array by its rank in the array
+
+24. Sort the elements of an array by frequency
+
+25. Rotate the elements of an array (left and right)
+
+26. Find the equilibrium index of an array
+
+27. Find the circular rotation of an array by K positions
+
+28. Sort an array according to the order defined by another array
+
+29. Search for an element in an array
+
+30. Check if an array is a subset of another array or not
